@@ -53,18 +53,5 @@ public class Boid : MonoBehaviour, IAgent
         
     }
 
-    private IEnumerable<IAgent> FindNearbyBoids()
-    {
-        
-    }
-
-    private IEnumerable<IAgent> FindNearbyPredators()
-    {
-       
-    }
-
-    private Vector3 FindFood()
-    {
-       
-    }
+  
 }
