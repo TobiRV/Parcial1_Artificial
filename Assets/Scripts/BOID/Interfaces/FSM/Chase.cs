@@ -6,6 +6,12 @@ public class Chase : BaseState<CazadorIA.IAStates, CazadorIA>
 {
     public override void OnEnter()
     {
+        energy--;
+
+        if (energy <= 0)
+        {
+            _fsm.ChangeState(CazadorIA.IAStates.Rest);
+        }
     }
 
     public override void OnExit()

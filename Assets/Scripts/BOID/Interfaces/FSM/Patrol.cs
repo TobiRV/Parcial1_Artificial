@@ -10,6 +10,12 @@ public class Patrol : BaseState<CazadorIA.IAStates, CazadorIA>
     float viewAngle = 50;
     public override void OnEnter()
     {
+        energy--;
+
+        if (energy <= 0)
+        {
+            _fsm.ChangeState(CazadorIA.IAStates.Rest);
+        }
     }
 
     public override void OnExit()
@@ -32,6 +38,35 @@ public class Patrol : BaseState<CazadorIA.IAStates, CazadorIA>
                 _fsm.ChangeState(CazadorIA.IAStates.CHASE);
                 return;
             }
+        }
+
+        var actualDir = (_avatar.waypoints[wayPointCounter].position - _avatar.transform.position);
+        actualDir.y = 0;
+
+        _avatar.transform.forward = (_avatar.transform.forward * 0.99f + actualDir.normalized * 0.01f);
+
+        if (isWaiting)
+        {
+            waitingTime -= Time.deltaTime;
+            if (waitingTime < 0)
+                isWaiting = false;
+            return;
+        }
+
+        _avatar.transform.position +=
+            actualDir.normalized
+            * Time.deltaTime * _avatar.speed;
+
+        if (actualDir.magnitude < .2f)
+        {
+            wayPointCounter++;
+
+            if (wayPointCounter >= _avatar.waypoints.Count)
+            {
+                wayPointCounter = 0;
+            }
+            isWaiting = true;
+            waitingTime = 1;
         }
     }
 }
