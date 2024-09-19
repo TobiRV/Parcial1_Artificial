@@ -8,6 +8,7 @@ public class CazadorIA : MonoBehaviour
     public LayerMask birdMask;
     public LayerMask obstacleMask;
     public Transform target;
+   
 
 
     public FSM<IAStates, CazadorIA> fsm;
