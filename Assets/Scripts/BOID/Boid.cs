@@ -17,12 +17,34 @@ public class Boid : MonoBehaviour, IAgent
     public Vector3 Velocity => velocity;
     private Vector3 velocity;
 
+
+    void Start()
+    {
+        velocity = Vector3.zero; 
+    }
+    void Update()
+    {
+        UpdateAgent();
+    }
     public void UpdateAgent()
     {
+        Debug.Log("Updating Boid");
+        velocity = Vector3.zero;
         // Actualiza el comportamiento del Boid.
         ApplyFlocking(FindNearbyBoids());
         ApplyArrive(FindFood());
         ApplyEvade(FindNearbyPredators());
+
+        LimitVelocity();
+        transform.position += velocity * Time.deltaTime;
+
+        //Limita la velocidad
+        if (velocity.magnitude > _speed)
+        {
+            velocity = velocity.normalized * _speed;
+        }
+        Debug.Log($"Velocity: {velocity}");
+        Debug.Log($"Position: {transform.position}");
     }
     private IEnumerable<IAgent> FindNearbyBoids()
     {
@@ -47,9 +69,11 @@ public class Boid : MonoBehaviour, IAgent
             IFood food = collider.GetComponent<IFood>();
             if (food != null)
             {
+                Debug.Log("Comida encontrada en: " + food.Position); 
                 return food.Position;
             }
         }
+        Debug.Log("No se encontró comida");
         return Vector3.zero;
     }
     private IAgent FindNearbyPredators()
@@ -58,11 +82,13 @@ public class Boid : MonoBehaviour, IAgent
         foreach (var collider in colliders)
         {
             var predator = collider.GetComponent<IAgent>();
-            if (predator != null && !ReferenceEquals(predator, this)) 
+            if (predator != null && !ReferenceEquals(predator, this))
             {
+                Debug.Log("Predator found: " + predator.Position);
                 return predator;
             }
         }
+        Debug.Log("No predators found");
         return null;
     }
 
@@ -85,19 +111,17 @@ public class Boid : MonoBehaviour, IAgent
             Vector3 directionToNeighbor = transform.position - neighbor.Position;
             float distance = directionToNeighbor.magnitude;
 
-            
             if (distance > 0 && distance < separationRange)
             {
-                
-                separationForce += directionToNeighbor.normalized / distance;
+                separationForce += directionToNeighbor.normalized / distance; // Ajusta la fuerza de separación
                 count++;
             }
         }
 
         if (count > 0)
         {
-            separationForce /= count; 
-            velocity += separationForce; 
+            separationForce /= count; // Promedia la fuerza de separación
+            velocity += separationForce;
         }
     }
 
@@ -135,7 +159,6 @@ public class Boid : MonoBehaviour, IAgent
         {
             float distance = Vector3.Distance(transform.position, neighbor.Position);
 
-            // 
             if (distance > 0 && distance < cohesionRange)
             {
                 cohesionForce += neighbor.Position;
@@ -145,27 +168,48 @@ public class Boid : MonoBehaviour, IAgent
 
         if (count > 0)
         {
-            cohesionForce /= count; // Calcula el centro de masa de los vecinos
-            Vector3 directionToCenter = cohesionForce - transform.position; 
-            velocity += directionToCenter.normalized; 
+            cohesionForce /= count; // Calcula el centro de masa
+            Vector3 directionToCenter = cohesionForce - transform.position;
+            velocity += directionToCenter.normalized;
         }
     }
 
     public void ApplyArrive(Vector3 target)
     {
+        if (target == Vector3.zero) return; // Si no hay comida, no hacemos nada
+
         Vector3 direction = target - transform.position;
-        // Mueve el boid hacia la comida
-        if (direction.magnitude > 0.1f) 
+        float distance = direction.magnitude;
+
+        // Fuerza de Llegada
+        if (distance < 1f)
         {
-            transform.position += direction.normalized * _speed * Time.deltaTime;
+            // Desacelerar si esta cerca de la comida
+            velocity += direction.normalized * (distance / 1f) * _speed * Time.deltaTime;
+        }
+        else
+        {
+            // Mueve el Boid hacia la comida
+            velocity += direction.normalized * _speed * Time.deltaTime;
         }
     }
 
     public void ApplyEvade(IAgent predator)
     {
-        Vector3 directionAway = transform.position - predator.Position;
-        transform.position += directionAway.normalized * _speed * Time.deltaTime;
+        if (predator != null) 
+        {
+            Vector3 directionAway = transform.position - predator.Position;
+            transform.position += directionAway.normalized * _speed * Time.deltaTime;
+        }
+
+
+    }
+    private void LimitVelocity()
+    {
+        if (velocity.magnitude > _speed)
+        {
+            velocity = velocity.normalized * _speed; // Limita la velocidad
+        }
     }
 
-  
 }
