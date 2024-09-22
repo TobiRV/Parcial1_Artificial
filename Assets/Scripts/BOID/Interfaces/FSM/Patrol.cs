@@ -25,20 +25,23 @@ public class Patrol : BaseState<CazadorIA.IAStates, CazadorIA>
     public override void OnUpdate()
     {
 
-        var posiblePlayer = Physics.OverlapSphere(_avatar.transform.position, 5, _birdMask);
+        var posiblePlayer = Physics.OverlapSphere(_avatar.transform.position, 5, _avatar.birdMask);
 
         if (posiblePlayer.Length > 0)
         {
             var playerDir = (posiblePlayer[0].transform.position - _avatar.transform.position);
+
+            // Verificar si el Boid está dentro del ángulo de visión y si no hay obstáculos en la línea de visión
             if (Vector3.Angle(_avatar.transform.forward, playerDir) < viewAngle / 2 &&
-                !Physics.Raycast(_avatar.transform.position,
-                playerDir, playerDir.magnitude, _avatar.obstacleMask))
+                !Physics.Raycast(_avatar.transform.position, playerDir, playerDir.magnitude, _avatar.obstacleMask))
             {
-                _avatar.target = posiblePlayer[0].transform;
-                _fsm.ChangeState(CazadorIA.IAStates.CHASE);
-                return;
+                _avatar.target = posiblePlayer[0].transform;  // Asignar el Boid detectado como objetivo
+                Debug.Log("Cazador persiguiendo a: " + _avatar.target);
+                _fsm.ChangeState(CazadorIA.IAStates.CHASE);  // Cambiar al estado de persecución
+                return; // Salir del método para no ejecutar más lógica de patrulla en este frame
             }
         }
+    
 
         var actualDir = (_avatar.waypoints[wayPointCounter].position - _avatar.transform.position);
         actualDir.y = 0;
