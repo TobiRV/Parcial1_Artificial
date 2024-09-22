@@ -12,6 +12,7 @@ public class Boid : MonoBehaviour, IAgent
     [SerializeField] float alignmentRange = 10f;
     [SerializeField] float cohesionRange = 10f;
     [SerializeField] private float _speed = 5f;
+    private IFood _currentFood; //almacenar la comida actual
 
     public Vector3 Position => transform.position;
     public Vector3 Velocity => velocity;
@@ -20,7 +21,7 @@ public class Boid : MonoBehaviour, IAgent
 
     void Start()
     {
-        velocity = Vector3.zero; 
+        velocity = Vector3.zero;
     }
     void Update()
     {
@@ -30,21 +31,24 @@ public class Boid : MonoBehaviour, IAgent
     {
         Debug.Log("Updating Boid");
         velocity = Vector3.zero;
-        // Actualiza el comportamiento del Boid.
-        ApplyFlocking(FindNearbyBoids());
-        ApplyArrive(FindFood());
-        ApplyEvade(FindNearbyPredators());
+
+        // Verifica si hay un depredador cercano
+        IAgent predator = FindNearbyPredators();
+        if (predator != null)
+        {
+            ApplyEvade(predator); // Evasión si hay un depredador
+        }
+        else
+        {
+            ApplyFlocking(FindNearbyBoids()); // Comportamiento de flocking
+            ApplyArrive(FindFood()); // Movimiento hacia la comida
+        }
+
+        ApplyFlocking(FindNearbyBoids()); // Comportamiento de flocking
+        ApplyArrive(FindFood()); // Movimiento hacia la comida
 
         LimitVelocity();
-        transform.position += velocity * Time.deltaTime;
-
-        //Limita la velocidad
-        if (velocity.magnitude > _speed)
-        {
-            velocity = velocity.normalized * _speed;
-        }
-        Debug.Log($"Velocity: {velocity}");
-        Debug.Log($"Position: {transform.position}");
+        transform.position += new Vector3(velocity.x, 0, velocity.z) * Time.deltaTime;
     }
     private IEnumerable<IAgent> FindNearbyBoids()
     {
@@ -54,7 +58,7 @@ public class Boid : MonoBehaviour, IAgent
         foreach (var collider in colliders)
         {
             var boid = collider.GetComponent<IAgent>();
-            if (boid != null && !ReferenceEquals(boid, this)) 
+            if (boid != null && !ReferenceEquals(boid, this))
             {
                 nearbyBoids.Add(boid);
             }
@@ -69,10 +73,12 @@ public class Boid : MonoBehaviour, IAgent
             IFood food = collider.GetComponent<IFood>();
             if (food != null)
             {
-                Debug.Log("Comida encontrada en: " + food.Position); 
+                _currentFood = food; // Guarda la referencia a la comida
+                Debug.Log("Comida encontrada en: " + food.Position);
                 return food.Position;
             }
         }
+        _currentFood = null; // Resetea la referencia si no se encuentra comida
         Debug.Log("No se encontró comida");
         return Vector3.zero;
     }
@@ -84,8 +90,12 @@ public class Boid : MonoBehaviour, IAgent
             var predator = collider.GetComponent<IAgent>();
             if (predator != null && !ReferenceEquals(predator, this))
             {
-                Debug.Log("Predator found: " + predator.Position);
-                return predator;
+                // Verifica si el collider pertenece al cazador
+                if (collider.CompareTag("Cazador")) 
+                {
+                    Debug.Log("Cazador detectado: " + predator.Position);
+                    return predator;
+                }
             }
         }
         Debug.Log("No predators found");
@@ -113,7 +123,7 @@ public class Boid : MonoBehaviour, IAgent
 
             if (distance > 0 && distance < separationRange)
             {
-                separationForce += directionToNeighbor.normalized / distance; // Ajusta la fuerza de separación
+                separationForce += directionToNeighbor.normalized / distance; // Fuerza inversamente proporcional a la distancia
                 count++;
             }
         }
@@ -121,7 +131,7 @@ public class Boid : MonoBehaviour, IAgent
         if (count > 0)
         {
             separationForce /= count; // Promedia la fuerza de separación
-            velocity += separationForce;
+            velocity += separationForce.normalized * _speed; // Aumenta la velocidad de separación
         }
     }
 
@@ -137,7 +147,7 @@ public class Boid : MonoBehaviour, IAgent
             // Aplica alineación solo si el vecino está dentro del rango de alineación
             if (distance > 0 && distance < alignmentRange)
             {
-                alignmentForce += neighbor.Velocity; 
+                alignmentForce += neighbor.Velocity;
                 count++;
             }
         }
@@ -145,8 +155,8 @@ public class Boid : MonoBehaviour, IAgent
         if (count > 0)
         {
             alignmentForce /= count; // Promedia las direcciones de alineación
-            alignmentForce = alignmentForce.normalized * velocity.magnitude; 
-            velocity += alignmentForce; 
+            alignmentForce = alignmentForce.normalized * velocity.magnitude;
+            velocity += alignmentForce;
         }
     }
 
@@ -184,8 +194,15 @@ public class Boid : MonoBehaviour, IAgent
         // Fuerza de Llegada
         if (distance < 1f)
         {
-            // Desacelerar si esta cerca de la comida
+            // Desacelerar si está cerca de la comida
             velocity += direction.normalized * (distance / 1f) * _speed * Time.deltaTime;
+
+            // Consumir comida al llegar
+            if (_currentFood != null)
+            {
+                _currentFood.Consume(); // Llama a Consume para destruir la comida
+                _currentFood = null; // Resetea la referencia
+            }
         }
         else
         {
@@ -196,10 +213,10 @@ public class Boid : MonoBehaviour, IAgent
 
     public void ApplyEvade(IAgent predator)
     {
-        if (predator != null) 
+        if (predator != null)
         {
             Vector3 directionAway = transform.position - predator.Position;
-            transform.position += directionAway.normalized * _speed * Time.deltaTime;
+            velocity += directionAway.normalized * (_speed * 1.5f); // Aumenta la fuerza de evasión
         }
 
 
@@ -212,4 +229,9 @@ public class Boid : MonoBehaviour, IAgent
         }
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, 5); // Cambia este valor a tus rangos de detección
+    }
 }
