@@ -6,6 +6,7 @@ public class Chase : BaseState<CazadorIA.IAStates, CazadorIA>
 {
     public override void OnEnter()
     {
+        Debug.Log("Entro en chase");
         energy--;
 
         if (energy <= 0)
