@@ -12,6 +12,7 @@ public class Boid : MonoBehaviour, IAgent
     [SerializeField] float alignmentRange = 10f;
     [SerializeField] float cohesionRange = 10f;
     [SerializeField] private float _speed = 5f;
+    [SerializeField,Range(0,1)] private float _rotationSpeed=0.002f;
     private IFood _currentFood; //almacenar la comida actual
    
 
@@ -50,8 +51,10 @@ public class Boid : MonoBehaviour, IAgent
         ApplyArrive(FindFood()); // Movimiento hacia la comida
 
         LimitVelocity();
-        transform.position += new Vector3(velocity.x, 0, velocity.z) * Time.deltaTime;
+        velocity.y = 0;
+        transform.position += velocity * Time.deltaTime;
 
+        transform.forward = transform.forward * (1 - _rotationSpeed) + velocity.normalized * _rotationSpeed;
         GameManager.instance.ShiftPositionOnBounds(transform);
     }
     private IEnumerable<IAgent> FindNearbyBoids()
@@ -232,7 +235,12 @@ public class Boid : MonoBehaviour, IAgent
             velocity = velocity.normalized * _speed; // Limita la velocidad
         }
     }
-
+    public void MoveTo(Vector3 destination)
+    {
+        Vector3 direction = (destination - transform.position).normalized;
+        velocity = direction * _speed;
+        transform.position += velocity * Time.deltaTime; 
+    }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
