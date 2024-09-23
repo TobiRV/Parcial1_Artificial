@@ -5,17 +5,25 @@ using UnityEngine;
 
 public class Boid : MonoBehaviour, IAgent
 {
+    [Header("Ranges")]
     [SerializeField] float visionRange = 10f;
     [SerializeField] float separationRange = 2f;
     [SerializeField] float foodDetectionRange = 5f;
     [SerializeField] float evadeRange = 15f;
     [SerializeField] float alignmentRange = 10f;
     [SerializeField] float cohesionRange = 10f;
-    [SerializeField] private float _speed = 5f;
-    [SerializeField,Range(0,1)] private float _rotationSpeed=0.002f;
-    private IFood _currentFood; //almacenar la comida actual
-   
 
+    [Header("Speed")]
+    [SerializeField] private float _speed = 5f;
+    [SerializeField, Range(0, 1)] private float _rotationSpeed = 0.002f;
+
+    [Header("Weights")] 
+    [SerializeField] private float separationWeight = 1.5f;
+    [SerializeField] private float alignmentWeight = 1.0f;
+    [SerializeField] private float cohesionWeight = 1.0f;
+
+
+    private IFood _currentFood; //almacenar la comida actual
     public Vector3 Position => transform.position;
     public Vector3 Velocity => velocity;
     private Vector3 velocity;
@@ -113,12 +121,15 @@ public class Boid : MonoBehaviour, IAgent
     public void ApplyFlocking(IEnumerable<IAgent> neighbors)
     {
         // Implementa la lógica de flocking 
-        ApplySeparation(neighbors);
-        ApplyAlignment(neighbors);
-        ApplyCohesion(neighbors);
+        Vector3 separationForce = ApplySeparation(neighbors) * separationWeight;
+        Vector3 alignmentForce = ApplyAlignment(neighbors) * alignmentWeight;
+        Vector3 cohesionForce = ApplyCohesion(neighbors) * cohesionWeight;
+
+        // Suma las fuerzas aplicando los pesos
+        velocity += separationForce + alignmentForce + cohesionForce;
     }
 
-    private void ApplySeparation(IEnumerable<IAgent> neighbors)
+    private Vector3 ApplySeparation(IEnumerable<IAgent> neighbors)
     {
         Vector3 separationForce = Vector3.zero;
         int count = 0;
@@ -134,15 +145,10 @@ public class Boid : MonoBehaviour, IAgent
                 count++;
             }
         }
-
-        if (count > 0)
-        {
-            separationForce /= count; // Promedia la fuerza de separación
-            velocity += separationForce.normalized * _speed; // Aumenta la velocidad de separación
-        }
+        return separationForce.normalized * _speed;
     }
 
-    private void ApplyAlignment(IEnumerable<IAgent> neighbors)
+    private Vector3 ApplyAlignment(IEnumerable<IAgent> neighbors)
     {
         Vector3 alignmentForce = Vector3.zero;
         int count = 0;
@@ -163,11 +169,13 @@ public class Boid : MonoBehaviour, IAgent
         {
             alignmentForce /= count; // Promedia las direcciones de alineación
             alignmentForce = alignmentForce.normalized * velocity.magnitude;
-            velocity += alignmentForce;
         }
+
+        return alignmentForce;
     }
 
-    private void ApplyCohesion(IEnumerable<IAgent> neighbors)
+
+    private Vector3 ApplyCohesion(IEnumerable<IAgent> neighbors)
     {
         Vector3 cohesionForce = Vector3.zero;
         int count = 0;
@@ -187,8 +195,10 @@ public class Boid : MonoBehaviour, IAgent
         {
             cohesionForce /= count; // Calcula el centro de masa
             Vector3 directionToCenter = cohesionForce - transform.position;
-            velocity += directionToCenter.normalized;
+            return directionToCenter.normalized * _speed;
         }
+
+        return Vector3.zero;
     }
 
     public void ApplyArrive(Vector3 target)
@@ -244,6 +254,6 @@ public class Boid : MonoBehaviour, IAgent
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, 5); // Cambia este valor a tus rangos de detección
+        Gizmos.DrawWireSphere(transform.position, 5);
     }
 }
