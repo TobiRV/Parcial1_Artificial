@@ -8,7 +8,7 @@ public class Food : MonoBehaviour, IFood
 
     public void Consume()
     {
-        
+        Debug.Log("se comio");
         Destroy(gameObject);
     }
 }

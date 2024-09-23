@@ -13,6 +13,7 @@ public class Boid : MonoBehaviour, IAgent
     [SerializeField] float cohesionRange = 10f;
     [SerializeField] private float _speed = 5f;
     private IFood _currentFood; //almacenar la comida actual
+   
 
     public Vector3 Position => transform.position;
     public Vector3 Velocity => velocity;
@@ -29,8 +30,9 @@ public class Boid : MonoBehaviour, IAgent
     }
     public void UpdateAgent()
     {
+        Debug.Log(_currentFood);
         Debug.Log("Updating Boid");
-        velocity = Vector3.zero;
+        //velocity = Vector3.zero;
 
         // Verifica si hay un depredador cercano
         IAgent predator = FindNearbyPredators();
@@ -49,6 +51,8 @@ public class Boid : MonoBehaviour, IAgent
 
         LimitVelocity();
         transform.position += new Vector3(velocity.x, 0, velocity.z) * Time.deltaTime;
+
+        GameManager.instance.ShiftPositionOnBounds(transform);
     }
     private IEnumerable<IAgent> FindNearbyBoids()
     {
@@ -74,7 +78,7 @@ public class Boid : MonoBehaviour, IAgent
             if (food != null)
             {
                 _currentFood = food; // Guarda la referencia a la comida
-                Debug.Log("Comida encontrada en: " + food.Position);
+                //Debug.Log("Comida encontrada en: " + food.Position);
                 return food.Position;
             }
         }
@@ -93,7 +97,7 @@ public class Boid : MonoBehaviour, IAgent
                 // Verifica si el collider pertenece al cazador
                 if (collider.CompareTag("Cazador")) 
                 {
-                    Debug.Log("Cazador detectado: " + predator.Position);
+                    //Debug.Log("Cazador detectado: " + predator.Position);
                     return predator;
                 }
             }
@@ -195,7 +199,7 @@ public class Boid : MonoBehaviour, IAgent
         if (distance < 1f)
         {
             // Desacelerar si está cerca de la comida
-            velocity += direction.normalized * (distance / 1f) * _speed * Time.deltaTime;
+            velocity += direction.normalized * (distance / 0.5f) * _speed * Time.deltaTime;
 
             // Consumir comida al llegar
             if (_currentFood != null)
