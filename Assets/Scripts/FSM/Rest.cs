@@ -8,11 +8,11 @@ public class Rest : BaseState<CazadorIA.IAStates, CazadorIA>
 
     [SerializeField] private float _restDuration = 10;
     private bool _isResting = false;
-    public CazadorIA cazador;
+ 
     public override void OnEnter()
     {
         _isResting = true;
-        cazador.StartCoroutine(RestCountDown());
+        _avatar.StartCoroutine(RestCountDown());
     }
 
     public override void OnExit()

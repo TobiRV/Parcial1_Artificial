@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public abstract class BaseState<T, J> where J : MonoBehaviour
@@ -16,7 +17,9 @@ public abstract class BaseState<T, J> where J : MonoBehaviour
         energy = initialEnergy; //Establecer el valor de energy
     }
 
-    public virtual void OnUpdate() { }
+    public virtual void OnUpdate() {}
     public virtual void OnEnter() { }
     public virtual void OnExit() { }
+
+    
 }

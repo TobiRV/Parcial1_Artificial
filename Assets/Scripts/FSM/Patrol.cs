@@ -71,5 +71,7 @@ public class Patrol : BaseState<CazadorIA.IAStates, CazadorIA>
             isWaiting = true;
             waitingTime = 1;
         }
+
+
     }
 }

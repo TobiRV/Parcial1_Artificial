@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
+
 public class CazadorIA : MonoBehaviour, IAgent
 {
     public List<Transform> waypoints;
