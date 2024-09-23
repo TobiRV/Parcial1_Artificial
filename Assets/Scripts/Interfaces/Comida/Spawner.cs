@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Spawner : MonoBehaviour
@@ -16,11 +15,14 @@ public class Spawner : MonoBehaviour
 
     private IEnumerator SpawnFood()
     {
-       
-        
+
+
+        while (true)
+        {
             SpawnRandomFood();
             yield return new WaitForSeconds(spawnInterval);
-        
+        }
+
     }
 
     private void SpawnRandomFood()
