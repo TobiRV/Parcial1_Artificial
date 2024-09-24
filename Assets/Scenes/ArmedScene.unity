@@ -455,6 +455,10 @@ MonoBehaviour:
   alignmentRange: 10
   cohesionRange: 10
   _speed: 3
+  _rotationSpeed: 0.002
+  separationWeight: 5
+  alignmentWeight: 5
+  cohesionWeight: 5
 --- !u!135 &616627171
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -706,7 +710,6 @@ MonoBehaviour:
   - {fileID: 662055754}
   - {fileID: 344805786}
   - {fileID: 1582253544}
-  numberOfFoodItems: 10
   spawnInterval: 2
 --- !u!4 &964894087
 Transform:
@@ -762,6 +765,10 @@ MonoBehaviour:
   alignmentRange: 10
   cohesionRange: 10
   _speed: 3
+  _rotationSpeed: 0.002
+  separationWeight: 5
+  alignmentWeight: 5
+  cohesionWeight: 5
 --- !u!135 &1015932784
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -887,6 +894,10 @@ MonoBehaviour:
   alignmentRange: 10
   cohesionRange: 10
   _speed: 3
+  _rotationSpeed: 0.002
+  separationWeight: 5
+  alignmentWeight: 5
+  cohesionWeight: 5
 --- !u!135 &1166079353
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1273,6 +1284,10 @@ MonoBehaviour:
   alignmentRange: 10
   cohesionRange: 10
   _speed: 3
+  _rotationSpeed: 0.002
+  separationWeight: 5
+  alignmentWeight: 5
+  cohesionWeight: 5
 --- !u!135 &1768153565
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1523,6 +1538,10 @@ MonoBehaviour:
   alignmentRange: 10
   cohesionRange: 10
   _speed: 3
+  _rotationSpeed: 0.002
+  separationWeight: 5
+  alignmentWeight: 5
+  cohesionWeight: 5
 --- !u!135 &2043514937
 SphereCollider:
   m_ObjectHideFlags: 0
