@@ -8,7 +8,7 @@ public class AlertSystem : MonoBehaviour
 
     private void Awake()
     {
-        // Un unico sistema de alertas en escena
+        // Un único sistema de alertas en escena
         if (Instance == null)
         {
             Instance = this;
