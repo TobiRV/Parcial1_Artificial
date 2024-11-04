@@ -20,6 +20,7 @@ public class Patrol : BaseState<CazadorIA.IAStates, CazadorIA>
 
     public override void OnExit()
     {
+
     }
 
     public override void OnUpdate()
