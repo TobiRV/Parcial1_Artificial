@@ -79,7 +79,12 @@ public class PatrolState : IState
         currentPath = path;
         if (currentPath.Count > 0)
         {
-            currentPath.RemoveAt(0);
+            currentPath.RemoveAt(0); 
+            Debug.Log($"Path found with {currentPath.Count} nodes.");
+        }
+        else
+        {
+            Debug.Log("No path found.");
         }
     }
 
