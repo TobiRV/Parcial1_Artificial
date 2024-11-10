@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 102319905}
   - component: {fileID: 102319904}
   m_Layer: 0
-  m_Name: Cube (8)
+  m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1000,7 +1000,7 @@ GameObject:
   - component: {fileID: 394105531}
   - component: {fileID: 394105530}
   m_Layer: 0
-  m_Name: Cube (1)
+  m_Name: Obstaculos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1231,7 +1231,7 @@ GameObject:
   - component: {fileID: 533369822}
   - component: {fileID: 533369827}
   m_Layer: 0
-  m_Name: Cube (5)
+  m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1371,7 +1371,7 @@ GameObject:
   - component: {fileID: 562108440}
   - component: {fileID: 562108439}
   m_Layer: 0
-  m_Name: Cube (6)
+  m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1600,7 +1600,7 @@ GameObject:
   - component: {fileID: 905626702}
   - component: {fileID: 905626701}
   m_Layer: 0
-  m_Name: Cube (7)
+  m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1970,7 +1970,7 @@ GameObject:
   - component: {fileID: 1147881012}
   - component: {fileID: 1147881011}
   m_Layer: 0
-  m_Name: Cube (4)
+  m_Name: Obstaculos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7588,7 +7588,7 @@ GameObject:
   - component: {fileID: 1888762678}
   - component: {fileID: 1888762677}
   m_Layer: 0
-  m_Name: Cube (3)
+  m_Name: Obstaculos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7693,7 +7693,7 @@ GameObject:
   - component: {fileID: 1946730320}
   - component: {fileID: 1946730319}
   m_Layer: 0
-  m_Name: Cube (2)
+  m_Name: Obstaculos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

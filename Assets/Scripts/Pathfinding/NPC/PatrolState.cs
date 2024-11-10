@@ -27,10 +27,8 @@ public class PatrolState : IState
 
     public void Update()
     {
-        // Comprobar si el jugador está en el campo de visión
         if (IsPlayerInView(out Vector3 playerPosition))
         {
-            // Enviar alerta al AlertSystem
             AlertSystem.Instance.SendAlert(playerPosition);
             return;
         }
@@ -47,8 +45,8 @@ public class PatrolState : IState
 
     private bool IsPlayerInView(out Vector3 playerPosition)
     {
-        float detectionRadius = 5f; // Ajusta el radio según lo necesites
-        LayerMask playerLayer = LayerMask.GetMask("PlayerLayer"); 
+        float detectionRadius = 5f; 
+        LayerMask playerLayer = LayerMask.GetMask("PlayerLayer");
         Collider[] hitColliders = Physics.OverlapSphere(npc.transform.position, detectionRadius, playerLayer);
         foreach (var collider in hitColliders)
         {
@@ -56,13 +54,13 @@ public class PatrolState : IState
             {
                 if (Pathfinding.FieldOfView(npc.transform, collider.transform, 45f))
                 {
-                    playerPosition = collider.transform.position; // Devuelve la posición del jugador
+                    playerPosition = collider.transform.position; 
                     return true;
                 }
             }
         }
 
-        playerPosition = Vector3.zero; // Devuelve Vector3.zero si no hay jugador
+        playerPosition = Vector3.zero;
         return false;
     }
 
@@ -79,7 +77,7 @@ public class PatrolState : IState
         currentPath = path;
         if (currentPath.Count > 0)
         {
-            currentPath.RemoveAt(0); 
+            currentPath.RemoveAt(0);
             Debug.Log($"Path found with {currentPath.Count} nodes.");
         }
         else
@@ -93,6 +91,7 @@ public class PatrolState : IState
         if (currentPath.Count > 0)
         {
             Vector3 targetPosition = currentPath[0].transform.position;
+
             npc.transform.position = Vector3.MoveTowards(npc.transform.position, targetPosition, Time.deltaTime * npc.speed);
 
             if (Vector3.Distance(npc.transform.position, targetPosition) < 0.1f)
