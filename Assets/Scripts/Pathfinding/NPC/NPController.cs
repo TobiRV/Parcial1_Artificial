@@ -8,6 +8,7 @@ public class NPCController : MonoBehaviour
     public Pathfinding pathfinding; // Asegúrate de que este campo esté inicializado en el Inspector
     public List<Node> patrolNodes;
     public float speed = 5f;
+    
 
     private void Start()
     {

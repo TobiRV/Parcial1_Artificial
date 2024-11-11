@@ -17,6 +17,9 @@ public class PatrolState : IState
         this.patrolNodes = patrolNodes;
         this.currentNodeIndex = 0;
         this.currentPath = new List<Node>();
+        this.currentPath = new List<Node>();
+
+
     }
 
     public void Enter()
@@ -36,6 +39,7 @@ public class PatrolState : IState
         if (currentPath.Count == 0)
         {
             CalculatePathToNextNode();
+            //  currentNodeIndex++;
         }
         else
         {
@@ -45,16 +49,16 @@ public class PatrolState : IState
 
     private bool IsPlayerInView(out Vector3 playerPosition)
     {
-        float detectionRadius = 5f; 
-        LayerMask playerLayer = LayerMask.GetMask("PlayerLayer");
+        float detectionRadius = 5f;
+        LayerMask playerLayer = LayerMask.GetMask("Player");
         Collider[] hitColliders = Physics.OverlapSphere(npc.transform.position, detectionRadius, playerLayer);
         foreach (var collider in hitColliders)
         {
             if (collider != null)
             {
-                if (Pathfinding.FieldOfView(npc.transform, collider.transform, 45f))
+                if (Pathfinding.FieldOfView(npc.transform, collider.transform, 90f))
                 {
-                    playerPosition = collider.transform.position; 
+                    playerPosition = collider.transform.position;
                     return true;
                 }
             }
@@ -77,7 +81,7 @@ public class PatrolState : IState
         currentPath = path;
         if (currentPath.Count > 0)
         {
-            currentPath.RemoveAt(0);
+            //currentPath.RemoveAt(0);
             Debug.Log($"Path found with {currentPath.Count} nodes.");
         }
         else
@@ -96,12 +100,16 @@ public class PatrolState : IState
 
             if (Vector3.Distance(npc.transform.position, targetPosition) < 0.1f)
             {
+                currentNodeIndex++;
                 currentPath.RemoveAt(0);
             }
         }
         else
         {
-            currentNodeIndex = (currentNodeIndex + 1) % patrolNodes.Count;
+            currentNodeIndex++;
+
+            //Aca o si te pasa de length volver a 0 o si te pasas restar ahora
+            //currentNodeIndex = (currentNodeIndex + 1) % patrolNodes.Count;
             CalculatePathToNextNode();
         }
     }
