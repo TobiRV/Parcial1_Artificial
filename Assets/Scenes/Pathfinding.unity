@@ -141,7 +141,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &102319904
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -649,7 +649,7 @@ MonoBehaviour:
   nodeMask:
     serializedVersion: 2
     m_Bits: 128
-  detectionRange: 23.68
+  detectionRange: 200
 --- !u!43 &309678704
 Mesh:
   m_ObjectHideFlags: 0
@@ -867,7 +867,7 @@ MonoBehaviour:
   nodeMask:
     serializedVersion: 2
     m_Bits: 128
-  detectionRange: 12.57
+  detectionRange: 200
 --- !u!135 &346803037
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -999,7 +999,7 @@ GameObject:
   - component: {fileID: 394105532}
   - component: {fileID: 394105531}
   - component: {fileID: 394105530}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Obstaculos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1215,7 +1215,7 @@ MonoBehaviour:
   nodeMask:
     serializedVersion: 2
     m_Bits: 128
-  detectionRange: 18.12
+  detectionRange: 200
 --- !u!1 &533369821
 GameObject:
   m_ObjectHideFlags: 0
@@ -1376,7 +1376,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &562108439
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1500,7 +1500,7 @@ MonoBehaviour:
   nodeMask:
     serializedVersion: 2
     m_Bits: 128
-  detectionRange: 31.13
+  detectionRange: 200
 --- !u!135 &807172122
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1605,7 +1605,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &905626701
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1744,7 +1744,7 @@ MonoBehaviour:
   nodeMask:
     serializedVersion: 2
     m_Bits: 128
-  detectionRange: 29.23
+  detectionRange: 200
 --- !u!135 &970185933
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1969,7 +1969,7 @@ GameObject:
   - component: {fileID: 1147881013}
   - component: {fileID: 1147881012}
   - component: {fileID: 1147881011}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Obstaculos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2185,7 +2185,7 @@ MonoBehaviour:
   nodeMask:
     serializedVersion: 2
     m_Bits: 128
-  detectionRange: 18.1
+  detectionRange: 200
 --- !u!1 &1382787901
 GameObject:
   m_ObjectHideFlags: 0
@@ -2238,7 +2238,7 @@ MonoBehaviour:
   nodeMask:
     serializedVersion: 2
     m_Bits: 128
-  detectionRange: 22.82
+  detectionRange: 200
 --- !u!135 &1382787904
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2362,7 +2362,7 @@ MonoBehaviour:
   nodeMask:
     serializedVersion: 2
     m_Bits: 128
-  detectionRange: 11.25
+  detectionRange: 200
 --- !u!135 &1392860655
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2535,7 +2535,7 @@ MonoBehaviour:
   nodeMask:
     serializedVersion: 2
     m_Bits: 128
-  detectionRange: 27.09
+  detectionRange: 200
 --- !u!135 &1403461254
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2674,7 +2674,7 @@ MonoBehaviour:
   nodeMask:
     serializedVersion: 2
     m_Bits: 128
-  detectionRange: 13.37
+  detectionRange: 200
 --- !u!135 &1462293524
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2798,7 +2798,7 @@ MonoBehaviour:
   nodeMask:
     serializedVersion: 2
     m_Bits: 128
-  detectionRange: 17.99
+  detectionRange: 200
 --- !u!135 &1467298017
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3087,7 +3087,7 @@ MonoBehaviour:
   nodeMask:
     serializedVersion: 2
     m_Bits: 128
-  detectionRange: 19.71
+  detectionRange: 200
 --- !u!135 &1486208909
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3211,7 +3211,7 @@ MonoBehaviour:
   nodeMask:
     serializedVersion: 2
     m_Bits: 128
-  detectionRange: 15.76
+  detectionRange: 200
 --- !u!135 &1631015196
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -3297,7 +3297,7 @@ GameObject:
   - component: {fileID: 1768357314}
   - component: {fileID: 1768357313}
   - component: {fileID: 1768357312}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7287,7 +7287,7 @@ MonoBehaviour:
   nodeMask:
     serializedVersion: 2
     m_Bits: 128
-  detectionRange: 15.41
+  detectionRange: 200
 --- !u!135 &1784463187
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -7503,7 +7503,7 @@ MonoBehaviour:
   nodeMask:
     serializedVersion: 2
     m_Bits: 128
-  detectionRange: 19.67
+  detectionRange: 200
 --- !u!135 &1882098516
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -7587,7 +7587,7 @@ GameObject:
   - component: {fileID: 1888762679}
   - component: {fileID: 1888762678}
   - component: {fileID: 1888762677}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Obstaculos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7692,7 +7692,7 @@ GameObject:
   - component: {fileID: 1946730321}
   - component: {fileID: 1946730320}
   - component: {fileID: 1946730319}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Obstaculos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7837,7 +7837,7 @@ MonoBehaviour:
   nodeMask:
     serializedVersion: 2
     m_Bits: 128
-  detectionRange: 16.07
+  detectionRange: 200
 --- !u!135 &2131168737
 SphereCollider:
   m_ObjectHideFlags: 0

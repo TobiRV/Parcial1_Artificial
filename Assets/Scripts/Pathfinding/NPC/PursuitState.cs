@@ -46,7 +46,7 @@ public class PursuitState : IState
         currentPath = path;
         if (currentPath.Count > 0)
         {
-            currentPath.RemoveAt(0); // Remove the first node as we already are at that position
+            currentPath.RemoveAt(0);
         }
     }
 

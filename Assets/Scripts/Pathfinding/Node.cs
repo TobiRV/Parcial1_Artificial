@@ -23,7 +23,8 @@ public class Node : MonoBehaviour, IWeighted
         {
             var actualNode= node.GetComponent<Node>(); 
             
-            if (actualNode == null || actualNode == this) continue;
+            if (actualNode == null || actualNode == this 
+                || !Pathfinding.LineOfSight(transform.position, actualNode.transform.position)) continue;
 
             neighbours.Add(actualNode);
         }
