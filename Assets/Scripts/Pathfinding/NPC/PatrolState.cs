@@ -27,22 +27,18 @@ public class PatrolState : IState
 
     public void Update()
     {
-        // Verificar si el jugador está en el campo de visión
         if (IsPlayerInView(out Vector3 playerPosition))
         {
-            // Si el jugador está visible, enviar una alerta
             AlertSystem.Instance.SendAlert(playerPosition);
             return;
         }
 
-        // Si no hay camino, calcular el camino al siguiente nodo
         if (currentPath.Count == 0)
         {
             CalculatePathToNextNode();
         }
         else
         {
-            // Moverse a lo largo del camino calculado
             MoveAlongPath();
         }
     }
@@ -68,16 +64,13 @@ public class PatrolState : IState
 
     private void CalculatePathToNextNode()
     {
-        // Verificar que haya nodos de patrullaje disponibles
         if (patrolNodes.Count == 0) return;
 
-        // Asegurarse de que el índice no se pase del tamaño de la lista
         if (currentNodeIndex >= patrolNodes.Count)
         {
-            currentNodeIndex = 0; // Si el índice está fuera de rango, reiniciar al primer nodo
+            currentNodeIndex = 0;
         }
 
-        // Obtener el siguiente nodo de patrullaje y solicitar el camino hacia él
         Node nextNode = patrolNodes[currentNodeIndex];
         pathfinding.RequestPath(npc.transform.position, nextNode.transform.position, OnPathFound);
     }
@@ -102,34 +95,29 @@ public class PatrolState : IState
         {
             Vector3 targetPosition = currentPath[0].transform.position;
 
-            // Mover al NPC hacia el siguiente nodo en el camino
+            npc.RotateTowards(targetPosition);
+
             npc.transform.position = Vector3.MoveTowards(npc.transform.position, targetPosition, Time.deltaTime * npc.speed);
 
-            // Verificar si el NPC ha llegado al objetivo
             if (Vector3.Distance(npc.transform.position, targetPosition) < 0.1f)
             {
-                // Eliminar el primer nodo de la lista de camino
                 currentPath.RemoveAt(0);
 
-                // Si se ha llegado al final del camino, avanzar al siguiente nodo
                 if (currentPath.Count == 0)
                 {
                     currentNodeIndex++;
 
-                    // Asegurarse de que el índice no se pase del tamaño de la lista
                     if (currentNodeIndex >= patrolNodes.Count)
                     {
-                        currentNodeIndex = 0; // Reiniciar al primer nodo si se ha alcanzado el final
+                        currentNodeIndex = 0;
                     }
 
-                    // Calcular el camino hacia el siguiente nodo
                     CalculatePathToNextNode();
                 }
             }
         }
         else
         {
-            // Si el camino está vacío, volver a calcular el camino al siguiente nodo
             currentNodeIndex++;
             if (currentNodeIndex >= patrolNodes.Count)
             {
