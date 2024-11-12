@@ -25,6 +25,14 @@ public class AlertState : IState
 
     public void Update()
     {
+        // Verificar si el jugador está en el campo de visión
+        if (npc.IsPlayerInView(out Vector3 playerPosition))
+        {
+            // Si el jugador está en vista, cambiar al estado de persecución
+            npc.ChangeState(new PursuitState(npc, playerPosition, pathfinding));
+            return;  // Salir del estado de alerta
+        }
+
         if (currentPath.Count == 0)
         {
             CalculatePathToAlertPosition();
@@ -32,11 +40,6 @@ public class AlertState : IState
         else
         {
             MoveAlongPath();
-        }
-
-        if (IsPlayerInView(out Vector3 playerPosition))
-        {
-            npc.ReceiveAlert(playerPosition);
         }
     }
 
@@ -50,7 +53,7 @@ public class AlertState : IState
         currentPath = path;
         if (currentPath.Count > 0)
         {
-            currentPath.RemoveAt(0);
+            currentPath.RemoveAt(0);  // Eliminar el primer nodo (el nodo inicial)
         }
     }
 
@@ -59,9 +62,7 @@ public class AlertState : IState
         if (currentPath.Count > 0)
         {
             Vector3 targetPosition = currentPath[0].transform.position;
-
             npc.RotateTowards(targetPosition);
-
             npc.transform.position = Vector3.MoveTowards(npc.transform.position, targetPosition, Time.deltaTime * npc.speed);
 
             if (Vector3.Distance(npc.transform.position, targetPosition) < 0.1f)
@@ -69,25 +70,6 @@ public class AlertState : IState
                 currentPath.RemoveAt(0);
             }
         }
-    }
-
-    private bool IsPlayerInView(out Vector3 playerPosition)
-    {
-        float detectionRadius = 5f;
-        LayerMask playerLayer = LayerMask.GetMask("PlayerLayer");
-
-        Collider[] hitColliders = Physics.OverlapSphere(npc.transform.position, detectionRadius, playerLayer);
-        foreach (var collider in hitColliders)
-        {
-            if (collider != null && Pathfinding.FieldOfView(npc.transform, collider.transform, 45f))
-            {
-                playerPosition = collider.transform.position;
-                return true;
-            }
-        }
-
-        playerPosition = Vector3.zero;
-        return false;
     }
 
     public void Exit()
