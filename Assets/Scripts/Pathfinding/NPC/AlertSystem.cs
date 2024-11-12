@@ -19,9 +19,10 @@ public class AlertSystem : MonoBehaviour
         }
     }
 
+    // Método que se llama cuando un NPC ve al jugador
     public void SendAlert(Vector3 playerPosition)
     {
-        // Enviar alerta a todos los NPCs
+        // Alerta a todos los NPCs en la escena
         NPCController[] npcs = FindObjectsOfType<NPCController>();
         foreach (var npc in npcs)
         {
