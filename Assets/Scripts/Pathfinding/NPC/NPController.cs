@@ -20,20 +20,16 @@ public class NPCController : MonoBehaviour
         StateMachine.Update();
     }
 
-    // Cambiar el estado actual del NPC
     public void ChangeState(IState newState)
     {
         StateMachine.ChangeState(newState);
     }
 
-    // Método para recibir la alerta del sistema y cambiar al estado de alerta
     public void ReceiveAlert(Vector3 playerPosition)
     {
-        // Cambiar al estado de alerta
         StateMachine.ChangeState(new AlertState(this, playerPosition, pathfinding));
     }
 
-    // Método para rotar el NPC hacia una dirección
     public void RotateTowards(Vector3 targetPosition)
     {
         Vector3 direction = (targetPosition - transform.position).normalized;
@@ -44,7 +40,6 @@ public class NPCController : MonoBehaviour
         }
     }
 
-    // Verificar si el jugador está dentro del campo de visión
     public bool IsPlayerInView(out Vector3 playerPosition)
     {
         float detectionRadius = 5f;
