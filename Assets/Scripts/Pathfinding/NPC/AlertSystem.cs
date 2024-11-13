@@ -8,7 +8,6 @@ public class AlertSystem : MonoBehaviour
 
     private void Awake()
     {
-        // Un único sistema de alertas en escena
         if (Instance == null)
         {
             Instance = this;
@@ -19,10 +18,8 @@ public class AlertSystem : MonoBehaviour
         }
     }
 
-    // Método que se llama cuando un NPC ve al jugador
     public void SendAlert(Vector3 playerPosition)
     {
-        // Alerta a todos los NPCs en la escena
         NPCController[] npcs = FindObjectsOfType<NPCController>();
         foreach (var npc in npcs)
         {

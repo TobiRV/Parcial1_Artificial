@@ -25,12 +25,10 @@ public class AlertState : IState
 
     public void Update()
     {
-        // Verificar si el jugador está en el campo de visión
         if (npc.IsPlayerInView(out Vector3 playerPosition))
         {
-            // Si el jugador está en vista, cambiar al estado de persecución
             npc.ChangeState(new PursuitState(npc, playerPosition, pathfinding));
-            return;  // Salir del estado de alerta
+            return; 
         }
 
         if (currentPath.Count == 0)
@@ -53,7 +51,7 @@ public class AlertState : IState
         currentPath = path;
         if (currentPath.Count > 0)
         {
-            currentPath.RemoveAt(0);  // Eliminar el primer nodo (el nodo inicial)
+            currentPath.RemoveAt(0); 
         }
     }
 

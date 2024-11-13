@@ -25,15 +25,14 @@ public class PursuitState : IState
 
     public void Update()
     {
-        // Verificar si el jugador está en el campo de visión
         if (npc.IsPlayerInView(out Vector3 playerPosition))
         {
-            targetPosition = playerPosition;  // Actualizar la posición del jugador
-            CalculatePathToPlayer();  // Recalcular el camino si es necesario
+            targetPosition = playerPosition; 
+            CalculatePathToPlayer();  
         }
         else
         {
-            npc.ChangeState(new PatrolState(npc, pathfinding, npc.patrolNodes)); // Volver al patrullaje si no lo ve
+            npc.ChangeState(new PatrolState(npc, pathfinding, npc.patrolNodes));
         }
 
         MoveAlongPath();
@@ -49,7 +48,7 @@ public class PursuitState : IState
         currentPath = path;
         if (currentPath.Count > 0)
         {
-            currentPath.RemoveAt(0);  // Eliminar el primer nodo
+            currentPath.RemoveAt(0); 
         }
     }
 
