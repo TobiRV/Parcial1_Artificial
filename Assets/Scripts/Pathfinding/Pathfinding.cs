@@ -64,7 +64,7 @@ public class Pathfinding : MonoBehaviour
         {
             actualRadious *= 2;
             fromColliderArray = Physics.OverlapSphere(from, actualRadious, nodeMask);
-            UnityEngine.Debug.Log("a");
+            
         }
 
         if (fromColliderArray.Length > 0)
