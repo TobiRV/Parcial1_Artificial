@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,6 +7,8 @@ public class PursuitState : IState
     private Vector3 targetPosition;
     private Pathfinding pathfinding;
     private List<Node> currentPath;
+    private float timeWithoutPlayer;
+    private const float maxTimeWithoutPlayer = 0.2f; // tiempo máximo antes de volver a patrullar
 
     public PursuitState(NPCController npc, Vector3 targetPosition, Pathfinding pathfinding)
     {
@@ -15,6 +16,7 @@ public class PursuitState : IState
         this.targetPosition = targetPosition;
         this.pathfinding = pathfinding;
         this.currentPath = new List<Node>();
+        this.timeWithoutPlayer = 0f;
     }
 
     public void Enter()
@@ -27,12 +29,18 @@ public class PursuitState : IState
     {
         if (npc.IsPlayerInView(out Vector3 playerPosition))
         {
-            targetPosition = playerPosition; 
-            CalculatePathToPlayer();  
+            targetPosition = playerPosition;
+            CalculatePathToPlayer();
+            timeWithoutPlayer = 0f; // Reinicia el temporizador si ve al jugador
         }
         else
         {
-            npc.ChangeState(new PatrolState(npc, pathfinding, npc.patrolNodes));
+            timeWithoutPlayer += Time.deltaTime;
+            if (timeWithoutPlayer > maxTimeWithoutPlayer)
+            {
+                npc.ChangeState(new PatrolState(npc, pathfinding, npc.patrolNodes));
+                return;
+            }
         }
 
         MoveAlongPath();
@@ -48,7 +56,7 @@ public class PursuitState : IState
         currentPath = path;
         if (currentPath.Count > 0)
         {
-            currentPath.RemoveAt(0); 
+            currentPath.RemoveAt(0);
         }
     }
 

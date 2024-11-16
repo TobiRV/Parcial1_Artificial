@@ -42,7 +42,7 @@ public class Pathfinding : MonoBehaviour
         if (!(queuePath.Count > 0) || isCalculating) return;
 
         OnResetNodes();
-        OnResetNodes = delegate() { };
+        OnResetNodes = delegate () { };
         isCalculating = true;
         var actualData = queuePath.Dequeue();
         StartCoroutine(Path(actualData.fromPoint, actualData.toPoint, actualData.callbackPath));
@@ -64,7 +64,6 @@ public class Pathfinding : MonoBehaviour
         {
             actualRadious *= 2;
             fromColliderArray = Physics.OverlapSphere(from, actualRadious, nodeMask);
-            
         }
 
         if (fromColliderArray.Length > 0)
@@ -105,6 +104,17 @@ public class Pathfinding : MonoBehaviour
             {
                 if (closeNodes.Contains(node)) continue;
                 OnResetNodes += node.OnResetWeight;
+
+                // Comprobación de raycast para evitar paredes
+                var direction = node.transform.position - actualNode.transform.position;
+                float distance = Vector3.Distance(actualNode.transform.position, node.transform.position);
+
+                // Verificamos si hay una pared en el camino
+                if (Physics.Raycast(actualNode.transform.position, direction, distance, LayerMask.GetMask("Wall")))
+                {
+                    continue;  // Si hay una pared, no consideramos este nodo
+                }
+
                 var heuristic = actualNode.Weight +
                     Vector3.Distance(node.transform.position, actualNode.transform.position) +
                     Vector3.Distance(node.transform.position, toNode.transform.position);
@@ -131,10 +141,6 @@ public class Pathfinding : MonoBehaviour
             counter++;
         }
 
-        #region Theta en funcion aparte
-        //var finalPath = ThetaStar();
-        #endregion
-
         #region Theta en A*
         var finalPath = new List<Node>();
         actualNode = toNode;
@@ -148,11 +154,10 @@ public class Pathfinding : MonoBehaviour
             actualNode != fromNode && actualNode.previous != null)
         {
             watchdog--;
-            var dir = seeingNode.previous.transform.position -
-                actualNode.transform.position;
+            var dir = seeingNode.previous.transform.position - actualNode.transform.position;
 
-            if (!Physics.Raycast(actualNode.transform.position, dir, dir.magnitude, LayerMask.GetMask("Wall", "Floor"))
-                && dir.y == 0)
+            // Comprobación de si hay una pared entre los nodos
+            if (!Physics.Raycast(actualNode.transform.position, dir, dir.magnitude, LayerMask.GetMask("Wall")) && dir.y == 0)
             {
                 seeingNode = seeingNode.previous;
             }
@@ -177,8 +182,8 @@ public class Pathfinding : MonoBehaviour
 
         finalPath.Reverse();
         stopWatch.Stop();
-        UnityEngine.Debug.Log(stopWatch.Elapsed);
-        UnityEngine.Debug.Log(stopWatch.ElapsedTicks);
+        //UnityEngine.Debug.Log(stopWatch.Elapsed);
+        //UnityEngine.Debug.Log(stopWatch.ElapsedTicks);
         callback(finalPath);
         isCalculating = false;
     }
@@ -196,9 +201,9 @@ public class Pathfinding : MonoBehaviour
             actualNode != fromNode && actualNode.previous != null)
         {
             watchdog--;
-            var dir = seeingNode.previous.transform.position -
-                actualNode.transform.position;
+            var dir = seeingNode.previous.transform.position - actualNode.transform.position;
 
+            // Comprobación de si hay una pared entre los nodos
             if (!Physics.Raycast(actualNode.transform.position, dir, dir.magnitude, LayerMask.GetMask("Wall")))
             {
                 seeingNode = seeingNode.previous;
