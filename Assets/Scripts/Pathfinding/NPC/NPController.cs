@@ -45,13 +45,21 @@ public class NPCController : MonoBehaviour
         float detectionRadius = 5f;
         LayerMask playerLayer = LayerMask.GetMask("Player");
 
+        // Verifica si hay colisiones en el radio de detección
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRadius, playerLayer);
         foreach (var collider in hitColliders)
         {
-            if (collider != null && Pathfinding.FieldOfView(transform, collider.transform, 45f))
+            if (collider != null)
             {
-                playerPosition = collider.transform.position;
-                return true;
+                // Verifica si el jugador está en el campo de visión
+                bool inFieldOfView = Pathfinding.FieldOfView(transform, collider.transform, 45f);
+                Debug.Log($"Collider detectado: {collider.name}, en campo de visión: {inFieldOfView}");
+
+                if (inFieldOfView)
+                {
+                    playerPosition = collider.transform.position;
+                    return true;
+                }
             }
         }
 

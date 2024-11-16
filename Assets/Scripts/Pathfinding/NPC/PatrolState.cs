@@ -81,7 +81,7 @@ public class PatrolState : IState
 
         if (currentPath.Count > 0)
         {
-            Debug.Log($"Path found with {currentPath.Count} nodes.");
+            //Debug.Log($"Path found with {currentPath.Count} nodes.");
         }
         else
         {
