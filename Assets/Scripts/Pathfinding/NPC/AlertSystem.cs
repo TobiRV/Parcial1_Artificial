@@ -23,7 +23,11 @@ public class AlertSystem : MonoBehaviour
         NPCController[] npcs = FindObjectsOfType<NPCController>();
         foreach (var npc in npcs)
         {
-            npc.ReceiveAlert(playerPosition);
+            // Si el NPC ya está en un estado de alerta, cambia su objetivo inmediatamente
+            if (npc.StateMachine.CurrentState is PatrolState)
+            {
+                npc.ReceiveAlert(playerPosition); // Recibe la alerta para empezar a perseguir
+            }
         }
     }
 }

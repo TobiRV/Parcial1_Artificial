@@ -8,7 +8,8 @@ public class PursuitState : IState
     private Pathfinding pathfinding;
     private List<Node> currentPath;
     private float timeWithoutPlayer;
-    private const float maxTimeWithoutPlayer = 0.2f; // tiempo máximo antes de volver a patrullar
+    private const float maxTimeWithoutPlayer = 0.2f; // Tiempo máximo antes de volver a patrullar
+    private const float maxDistanceToPlayer = 10f; // Distancia máxima para perseguir sin pathfinding
 
     public PursuitState(NPCController npc, Vector3 targetPosition, Pathfinding pathfinding)
     {
@@ -30,7 +31,19 @@ public class PursuitState : IState
         if (npc.IsPlayerInView(out Vector3 playerPosition))
         {
             targetPosition = playerPosition;
-            CalculatePathToPlayer();
+
+            // Si el jugador está cerca, perseguimos directamente sin pathfinding
+            if (Vector3.Distance(npc.transform.position, targetPosition) > maxDistanceToPlayer)
+            {
+                // El jugador está muy lejos, se requiere pathfinding
+                CalculatePathToPlayer();
+            }
+            else
+            {
+                // Si está cerca, lo seguimos directamente
+                MoveDirectlyTowardsPlayer(playerPosition);
+            }
+
             timeWithoutPlayer = 0f; // Reinicia el temporizador si ve al jugador
         }
         else
@@ -43,6 +56,7 @@ public class PursuitState : IState
             }
         }
 
+        // Moverse a lo largo del camino calculado (si es necesario)
         MoveAlongPath();
     }
 
@@ -56,7 +70,7 @@ public class PursuitState : IState
         currentPath = path;
         if (currentPath.Count > 0)
         {
-            currentPath.RemoveAt(0);
+            currentPath.RemoveAt(0); // Elimina el primer nodo, ya que ya estamos en su posición
         }
     }
 
@@ -73,6 +87,13 @@ public class PursuitState : IState
                 currentPath.RemoveAt(0);
             }
         }
+    }
+
+    private void MoveDirectlyTowardsPlayer(Vector3 playerPosition)
+    {
+        // Mueve directamente hacia la posición del jugador sin pathfinding
+        npc.RotateTowards(playerPosition);
+        npc.transform.position = Vector3.MoveTowards(npc.transform.position, playerPosition, Time.deltaTime * npc.speed);
     }
 
     public void Exit()
