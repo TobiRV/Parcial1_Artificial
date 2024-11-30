@@ -270,7 +270,12 @@ public class Pathfinding : MonoBehaviour
     public static bool LineOfSight(Vector3 from, Vector3 to)
     {
         var dir = to - from;
-        return !Physics.Raycast(from, dir, dir.magnitude, LayerMask.GetMask("Wall", "Floor"));
+        RaycastHit hit;
+        if (Physics.Raycast(from, dir, out hit, dir.magnitude, LayerMask.GetMask("Wall", "Floor")))
+        {
+            return hit.collider == null;
+        }
+        return true;
     }
 
     public static bool FieldOfView(Transform from, Transform to, float viewAngle)

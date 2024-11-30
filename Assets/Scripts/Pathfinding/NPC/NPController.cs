@@ -53,7 +53,7 @@ public class NPCController : MonoBehaviour
             {
                 // Verifica si el jugador está en el campo de visión
                 bool inFieldOfView = Pathfinding.FieldOfView(transform, collider.transform, 45f);
-                Debug.Log($"Collider detectado: {collider.name}, en campo de visión: {inFieldOfView}");
+                //Debug.Log($"Collider detectado: {collider.name}, en campo de visión: {inFieldOfView}");
 
                 if (inFieldOfView)
                 {
@@ -63,7 +63,9 @@ public class NPCController : MonoBehaviour
             }
         }
 
+
         playerPosition = Vector3.zero;
         return false;
     }
+
 }

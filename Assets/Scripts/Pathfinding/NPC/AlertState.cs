@@ -65,8 +65,20 @@ public class AlertState : IState
 
             if (Vector3.Distance(npc.transform.position, targetPosition) < 0.1f)
             {
-                currentPath.RemoveAt(0);
+                currentPath.RemoveAt(0); // Eliminamos el nodo al que hemos llegado
+
+                // Si hemos llegado al destino de la alerta y no hay más nodos en el path
+                if (currentPath.Count == 0)
+                {
+                    // Cambiamos al estado de patrullaje, y volvemos a hacer pathfinding hacia el siguiente nodo de patrullaje
+                    npc.ChangeState(new PatrolState(npc, npc.pathfinding, npc.patrolNodes));
+                }
             }
+        }
+        else
+        {
+            // Si no hay pathfinding, recalculamos el path hacia el destino de la alerta.
+            CalculatePathToAlertPosition();
         }
     }
 
